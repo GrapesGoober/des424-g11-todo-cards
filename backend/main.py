@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+import backend.database as database
 
 app = FastAPI()
 
@@ -14,3 +15,8 @@ class PingBody(BaseModel):
 async def ping(body: PingBody):
     body.text = "got " + body.text
     return body
+
+@app.post("/api/database/")
+async def ping(body: PingBody):
+    database.record_to_db(body.text)
+    return True
