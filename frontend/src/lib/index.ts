@@ -1,7 +1,7 @@
 // place files you want to import through the `$lib` alias in this folder.
 
 export async function post_api_ping(text: string): Promise<string> {
-    const res = await fetch("/api/ping", {
+    const res = await fetch("/api/record", {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'

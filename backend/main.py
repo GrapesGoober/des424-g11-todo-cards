@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-import backend.database as database
+import database
 
 app = FastAPI()
 
@@ -8,15 +8,11 @@ app = FastAPI()
 async def root():
     return {"message": "Hello World"}
 
-class PingBody(BaseModel):
+class RecordTextBody(BaseModel):
     text: str
 
-@app.post("/api/ping/")
-async def ping(body: PingBody):
+@app.post("/api/record/")
+async def record(body: RecordTextBody):
+    database.record_text_to_db(body.text)
     body.text = "got " + body.text
     return body
-
-@app.post("/api/database/")
-async def ping(body: PingBody):
-    database.record_to_db(body.text)
-    return True
