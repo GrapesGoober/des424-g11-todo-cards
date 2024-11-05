@@ -53,16 +53,28 @@ def Is_username_exists(username: str):
 def create_user_table():
     conn: sqlite3.Connection = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
-    #didn't check yet
+
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            uid INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT UNIQUE,
             password TEXT,
-            date_of_birth TEXT,
+            date_of_birth DATE,
             email TEXT UNIQUE
         )
     ''')
     
+    conn.commit()
+    conn.close()
     
-    return #
+def user_login(username: str, password:str):
+    conn: sqlite3.Connection = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT 1 FROM users WHERE username = ? AND password = ?", (username, password))
+    exists = cursor.fetchone() is not None
+
+    conn.commit()
+    conn.close()
+    return exists
+    

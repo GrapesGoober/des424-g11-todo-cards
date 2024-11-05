@@ -1,13 +1,14 @@
 
 from pydantic import BaseModel
 from datetime import date
+from database import Is_username_exists, user_login
 
 class SignUp:
     class RequestBody(BaseModel):
         username: str
         password: str
         confirm_password: str
-        dateOfBirth: date #YYYYMMDD
+        dateOfBirth: date #YYYY-MM-DD
         email: str
         
 
@@ -16,11 +17,15 @@ class SignUp:
 
     def sign_up(body: RequestBody) -> ResponseBody:
         #check username is exist
-        
+        if Is_username_exists(body.username):
+            return SignUp.ResponseBody(status=False)
+
         #check password is the same as confirm_password
+        if body.password != body.confirm_password:
+            return SignUp.ResponseBody(status=False)
         
-        print(f"signed up with {body.username} and {body.password}")
-        return SignUp.ResponseBody(status=False)
+        # sing-up complete, update status
+        return SignUp.ResponseBody(status=True)
     
 
 class Login:
@@ -34,5 +39,8 @@ class Login:
         status: bool
 
     def login(body: RequestBody) -> ResponseBody:
-        print(f"logged in with {body.username} and {body.password}")
-        return Login.ResponseBody(status=False)
+        # verify
+        if user_login(body.username, body.password):
+            return Login.ResponseBody(status=True)
+        else:
+            return Login.ResponseBody(status=False)
