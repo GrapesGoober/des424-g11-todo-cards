@@ -38,3 +38,31 @@ def create_table():
     conn.commit()
     conn.close()
     
+def Is_username_exists(username: str):
+    conn: sqlite3.Connection = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+
+    # Query to check if the username exists
+    cursor.execute("SELECT 1 FROM users WHERE username = ?", (username,))
+    exists = cursor.fetchone() is not None
+
+    conn.commit()
+    conn.close()
+    return exists
+
+def create_user_table():
+    conn: sqlite3.Connection = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+    #didn't check yet
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT UNIQUE,
+            password TEXT,
+            date_of_birth TEXT,
+            email TEXT UNIQUE
+        )
+    ''')
+    
+    
+    return #
