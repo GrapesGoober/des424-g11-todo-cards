@@ -11,7 +11,7 @@ class SignUp:
 
     def sign_up(body: RequestBody) -> ResponseBody:
         print(f"signed up with {body.username} and {body.password}")
-        return SignUp.ResponseBody(False)
+        return SignUp.ResponseBody(status=False)
 
 class Login:
     class RequestBody(BaseModel):
@@ -25,4 +25,4 @@ class Login:
 
     def login(body: RequestBody) -> ResponseBody:
         print(f"logged in with {body.username} and {body.password}")
-        return Login.ResponseBody(False)
+        return Login.ResponseBody(status=False)

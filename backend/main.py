@@ -19,7 +19,7 @@ async def record(body: RecordTextBody):
 
 # NOTE: this is just an example API
 # feel free to rewrite classes and design it as much as you wish
-from backend.user.user import SignUp
+from user.user import SignUp
 
 @app.post("/api/user/create")
 async def create(body: SignUp.RequestBody):
