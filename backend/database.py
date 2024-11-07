@@ -78,3 +78,17 @@ def user_login(username: str, password:str):
     conn.close()
     return exists
     
+def singup_user(username: str, 
+                password: str,
+                dateOfBirth: date, #YYYY-MM-DD
+                email: str):
+    
+    conn: sqlite3.Connection = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+    
+    cursor.execute("INSERT INTO users (username, password, dateOfBirth, email) VALUES (?, ?, ?, ?)",
+            (username,), (password,), (dateOfBirth,), (email,) ) 
+    
+    conn.commit()
+    conn.close()
+    
