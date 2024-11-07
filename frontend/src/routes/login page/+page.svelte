@@ -1,30 +1,26 @@
 <!--Generate from chatGPT. try to modify and understand in script part (line 9 - 22)-->
 <script lang="ts">
-    import { post_api_ping } from "$lib";
+    import { PostApi, PostApiPing } from "$lib";
     let username: string = ""
     let password: string = ""
     let message: string = ""
     
     async function Login(): Promise<void> {
-        const response = await fetch("/api/user/login", {
-                method: "POST",
-                headers: {
-                    'Accept': 'application/json',
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ username, password }),
-            });
+        const response = await PostApi("/api/user/login", {
+            username,
+            password
+        });
 
-            const data = await response.json();
+        const data = await response.json();
 
-            if (response.ok && data.status) {
-                // Successful login, redirect or show success
-                alert("Login successful!");
-                window.location.href = "/dashboard"; // Redirect to another page
-            } else {
-                // Show error message
-                message = "Login failed";
-            }
+        if (response.ok && data.status) {
+            // Successful login, redirect or show success
+            alert("Login successful!");
+            window.location.href = "/dashboard"; // Redirect to another page
+        } else {
+            // Show error message
+            message = "Login failed";
+        }
     }
 </script>
 
