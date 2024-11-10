@@ -1,10 +1,10 @@
 <script lang="ts">
-    import { post_api_ping } from "$lib";
+    import { PostApiPing } from "$lib";
     let text: string = ""
     let ping_text: string = ""
     
     async function sendToBackend(): Promise<void> {
-        ping_text = await post_api_ping(text);
+        ping_text = await PostApiPing(text);
     }
 </script>
 
