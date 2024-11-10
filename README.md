@@ -6,7 +6,7 @@ No description yet, just wait a bit.
 2) `cd frontend` then `npm install` then `npm run dev`
 
 ## Members
-- 
+- Nachat Kaewmeesang 6422770774
 - 
 - 
 - 
