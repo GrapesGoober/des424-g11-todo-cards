@@ -7,7 +7,7 @@ No description yet, just wait a bit.
 
 ## Members
 - Nachat Kaewmeesang 6422770774
-- 
+- Pusit Eiamsook 6422772226
 - Krittidech Paijitjinda 6422781664
 - Supakorn Vannathong 6422782712
 - Akarawit Srisawat 6422781549
