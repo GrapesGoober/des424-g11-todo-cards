@@ -1,7 +1,6 @@
-
-from pydantic import BaseModel
 from datetime import date
-from database import Is_username_exists, user_login
+from pydantic import BaseModel
+from user_function import *
 
 class SignUp:
     class RequestBody(BaseModel):
@@ -28,6 +27,7 @@ class SignUp:
         return SignUp.ResponseBody(status=True)
     
 
+
 class Login:
     class RequestBody(BaseModel):
         username: str
@@ -44,3 +44,6 @@ class Login:
             return Login.ResponseBody(status=True)
         else:
             return Login.ResponseBody(status=False)
+        
+
+        
