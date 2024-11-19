@@ -1,4 +1,15 @@
 services:
+  my-fastapi-app:
+    build: 
+      context: ./backend  # Build the image from the current directory (.)
+      args: 
+        - --no-cache=True
+    volumes:
+      - ./backend:/app  # Mount current directory to /app in the container
+    ports:
+      - "8000:8000"  # Map container port 8000 to host port 8000
+    depends_on:
+      - mysql  # Wait for MySQL to start before running the FastAPI app
   mysql:
     image: mysql:5.7
     container_name: mysql
