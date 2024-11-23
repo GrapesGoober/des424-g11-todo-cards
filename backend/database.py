@@ -1,5 +1,6 @@
 
 import sqlite3
+from datetime import date
 
 # I'm thinking we have 2 database instances
 # 1 - AWS database (say, RDS) for deployment
