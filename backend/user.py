@@ -1,7 +1,11 @@
 
+import jwt
 import mysql.connector
 from pydantic import BaseModel
-from datetime import date
+from datetime import date, datetime, timedelta, timezone
+
+SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
+ALGORITHM = "HS256"
 
 class SignupRequest(BaseModel):
     username: str
@@ -19,6 +23,10 @@ class SignupResponse(BaseModel):
 
 class LoginResponse(BaseModel):
     status: bool
+
+class TokenPayload(BaseModel):
+    username: str
+    expire: datetime
 
 def connect_to_db() -> mysql.connector.MySQLConnection:
     """
@@ -78,3 +86,53 @@ def sign_up(body: SignupRequest) -> SignupResponse:
         status=True,
         message=""
     )
+
+def generate_token(body: LoginRequest) -> str:
+    """
+    Authenticates a user. 
+    If success, would generate a JWT token.
+    """
+    conn = connect_to_db()
+    cursor = conn.cursor()
+
+    # Check Username Exists
+    cursor.execute("""
+        SELECT 
+            `password`
+        FROM 
+            `users` 
+        WHERE 
+            `username` = %(username)s;
+    """, body.model_dump())
+
+    row = cursor.fetchone()
+    cursor.close()
+    conn.close()
+
+    if row is None:
+        return "Username not found"
+    
+    password, = row
+    if body.password != password:
+        return "Password incorrect"
+
+    payload = TokenPayload(
+        username=body.username,
+        expire=datetime.now(timezone.utc) + timedelta(minutes=1)
+    )
+
+    encoded_jwt = jwt.encode(payload.model_dump(mode='json'), SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
+
+def verify_token(token: str) -> bool:
+    try:
+        payload = TokenPayload(
+            **jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        )
+        if payload.username != "john":
+            return False
+        if datetime.now(timezone.utc) > payload.expire:
+            return False
+        return True
+    except:
+        return False
