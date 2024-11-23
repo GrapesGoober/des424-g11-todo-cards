@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+import record_text
+import user
 
 app = FastAPI()
 
@@ -6,13 +8,9 @@ app = FastAPI()
 async def root():
     return {"message": "Hello World"}
 
-import record_text
-
 @app.post("/api/record/")
 async def record(body: record_text.RecordTextBody):
     return record_text.record(body)
-
-import user
 
 @app.post("/api/user")
 async def sign_up(body: user.SignupRequest) -> user.SignupResponse:
