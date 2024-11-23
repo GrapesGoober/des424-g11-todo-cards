@@ -12,3 +12,10 @@ CREATE TABLE text_records (
     `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
     `text` TEXT
 );
+
+CREATE TABLE users (
+    `username` VARCHAR(20) PRIMARY KEY,
+    `password` TEXT,
+    `date_of_birth` DATE,
+    `email` TEXT
+);
