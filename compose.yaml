@@ -1,5 +1,22 @@
 services:
-  my-fastapi-app:
+  svelte-app:
+    build: 
+      context: ./frontend  # Build the image from frontend
+      args: 
+        - --no-cache=True
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/static:/app/static
+      - ./frontend/vite.config.js:/app/vite.config.js
+      - ./frontend/tsconfig.json:/app/tsconfig.json
+      - ./frontend/svelte.config.js:/app/svelte.config.js
+      - ./frontend/.svelte-kit:/app/.svelte-kit
+    ports:
+      - "5173:5173"  # Map container port 5173 (default Vite port)
+    depends_on:
+      - fastapi-app  # Wait for backend to start before running the FastAPI app
+    command: npm run dev -- --host 0.0.0.0 --port 5173
+  fastapi-app:
     build: 
       context: ./backend  # Build the image from the current directory (.)
       args: 
@@ -16,11 +33,12 @@ services:
     environment:
       MYSQL_DATABASE: 'mysql'
       # in this case, user="root"
-      MYSQL_ROOT_PASSWORD: '12345678'
+      MYSQL_ROOT_PASSWORD: ''
+      MYSQL_ALLOW_EMPTY_PASSWORD: yes
     ports:
       - "3306:3306"
     volumes:
       - mysqldata:/var/lib/mysql
-      - ./backend/sql_scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
 volumes:
   mysqldata:

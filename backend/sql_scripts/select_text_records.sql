@@ -1,1 +1,0 @@
-SELECT * FROM text_records where id < 3;

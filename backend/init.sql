@@ -4,8 +4,11 @@
 
 CREATE DATABASE todocards;
 
+USE todocards;
+
 -- Just an example table to create
+-- records texts to test API
 CREATE TABLE text_records (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    text TEXT
+    `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
+    `text` TEXT
 );
