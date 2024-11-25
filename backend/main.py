@@ -21,5 +21,5 @@ async def token(body: user.LoginRequest) -> str:
     return user.generate_token(body)
 
 @app.post("/api/test-token")
-async def test_token(token: str) -> bool:
-    return user.verify_token(token)
+async def test_token(token: str) -> str:
+    return user.verify_jwt_username(token)

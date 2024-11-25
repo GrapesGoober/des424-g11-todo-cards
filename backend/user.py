@@ -1,4 +1,5 @@
 
+from fastapi import HTTPException, status
 import jwt
 import mysql.connector
 from pydantic import BaseModel
@@ -124,15 +125,52 @@ def generate_token(body: LoginRequest) -> str:
     encoded_jwt = jwt.encode(payload.model_dump(mode='json'), SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
-def verify_token(token: str) -> bool:
+def verify_jwt_username(token: str) -> str:
+    """
+    Verify that the authenticated token corresponds to a valid user and not expires.
+    If token valids, returns username.
+    """
+
     try:
-        payload = TokenPayload(
+        token_payload = TokenPayload(
             **jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         )
-        if payload.username != "john":
-            return False
-        if datetime.now(timezone.utc) > payload.expire:
-            return False
-        return True
     except:
-        return False
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="JWT Invalid"
+        )
+    
+    # Verify expiration
+    if datetime.now(timezone.utc) > token_payload.expire:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="JWT Expires"
+        )
+    
+    conn = connect_to_db()
+    cursor = conn.cursor()
+
+    # Verify Username
+    cursor.execute("""
+        SELECT 
+            1 
+        FROM 
+            `users` 
+        WHERE 
+            `username` = %(username)s;
+    """, token_payload.model_dump())
+
+
+    row = cursor.fetchone()
+    cursor.close()
+    conn.close()
+
+    if row is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="JWT Expires"
+        )
+    
+    # Checks passed, returns username
+    return token_payload.username
