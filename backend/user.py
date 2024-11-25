@@ -78,6 +78,35 @@ def sign_up(body: SignupRequest) -> bool:
 
     return True
 
+def login(body: SignupRequest) -> bool:
+    db = connect_to_db()
+    cursor = db.cursor()
+
+    # Check Username Exists
+    cursor.execute("""
+        SELECT 
+            1
+        FROM 
+            `users` 
+        WHERE 
+            `username` = %(username)s
+            AND `password` = %(password)s;
+    """, body.model_dump())
+
+    if row is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid username or password. Please try again."
+        )
+
+    row = cursor.fetchone()
+    cursor.close()
+    db.commit()
+
+    
+    token = generate_token(body)
+    return token
+
 def generate_token(body: LoginRequest) -> str:
     """
     Authenticates a user. 

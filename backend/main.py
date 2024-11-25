@@ -12,9 +12,13 @@ async def root():
 async def record(body: record_text.RecordTextBody):
     return record_text.record(body)
 
-@app.post("/api/user")
+@app.post("/api/user/signup")
 async def sign_up(body: user.SignupRequest) -> bool:
     return user.sign_up(body)
+
+@app.post("/api/user/login")
+async def login(body: user.LoginRequest) -> str:
+    return user.login(body)
 
 @app.post("/api/token")
 async def token(body: user.LoginRequest) -> str:

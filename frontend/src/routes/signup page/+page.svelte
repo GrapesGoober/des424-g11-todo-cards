@@ -1,4 +1,4 @@
-#frontend signup
+
 <script lang="ts">
     import { PostApi } from "$lib";
     
