@@ -18,13 +18,6 @@ class LoginRequest(BaseModel):
     username: str
     password: str
 
-class SignupResponse(BaseModel):
-    status: bool
-    message: str = ""
-
-class LoginResponse(BaseModel):
-    status: bool
-
 class TokenPayload(BaseModel):
     username: str
     expire: datetime
@@ -41,7 +34,7 @@ def connect_to_db() -> mysql.connector.MySQLConnection:
         database="todocards"
     )
 
-def sign_up(body: SignupRequest) -> SignupResponse:
+def sign_up(body: SignupRequest) -> bool:
     """
     Creates a new user into database. 
     If user already exists, returns status `False`.
@@ -61,16 +54,16 @@ def sign_up(body: SignupRequest) -> SignupResponse:
     """, body.model_dump())
 
     if cursor.fetchone() is not None:
-        return SignupResponse(
-            status=False,
-            message="Username already exists"
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Username already exists"
         )
     
     # Check username length not exceed 20 (defined sized in init.sql)
     if len(body.username) > 20:
-        return SignupResponse(
-            status=False,
-            message="Username length must be below 20"
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Username length must be below 20"
         )
     
     # User not exist, create a new one
@@ -83,10 +76,7 @@ def sign_up(body: SignupRequest) -> SignupResponse:
     cursor.close()
     db.commit()
 
-    return SignupResponse(
-        status=True,
-        message=""
-    )
+    return True
 
 def generate_token(body: LoginRequest) -> str:
     """
@@ -111,12 +101,20 @@ def generate_token(body: LoginRequest) -> str:
     conn.close()
 
     if row is None:
-        return "Username not found"
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Username not found"
+        )
     
+    # Verifies password
     password, = row
     if body.password != password:
-        return "Password incorrect"
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Password incorrect"
+        )
 
+    # All checks passed, then returns a JWT token
     payload = TokenPayload(
         username=body.username,
         expire=datetime.now(timezone.utc) + timedelta(minutes=1)

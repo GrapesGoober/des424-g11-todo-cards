@@ -13,7 +13,7 @@ async def record(body: record_text.RecordTextBody):
     return record_text.record(body)
 
 @app.post("/api/user")
-async def sign_up(body: user.SignupRequest) -> user.SignupResponse:
+async def sign_up(body: user.SignupRequest) -> bool:
     return user.sign_up(body)
 
 @app.post("/api/token")
