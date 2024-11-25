@@ -12,3 +12,19 @@ CREATE TABLE text_records (
     `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
     `text` TEXT
 );
+
+-- Deck
+CREATE TABLE `deck` (
+  `deckid` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  `deckName` varchar(50) NOT NULL,
+  `deckDescription` text NOT NULL,
+  `deckOwnerID` varchar(50) NOT NULL
+)
+
+-- Deck-User
+CREATE TABLE `access` (
+  `deckid` int(11) NOT NULL,
+  `userid` int(11) NOT NULL,
+  `allow` BOOL DEFAULT FALSE,
+  PRIMARY KEY (`deckid`, `userid`)
+)
