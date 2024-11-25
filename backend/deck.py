@@ -1,10 +1,15 @@
 import mysql.connector
+from typing import List
 from pydantic import BaseModel
 from datetime import datetime
 
 class DeckInfo(BaseModel):
     name: str
     description: str
+
+class DeckList(BaseModel):
+    id: int
+    name: str
 
 def connect_to_db() -> mysql.connector.MySQLConnection:
     """
@@ -21,7 +26,7 @@ def connect_to_db() -> mysql.connector.MySQLConnection:
 def create_deck(body: DeckInfo, user: str) -> bool:
     db = connect_to_db()
     cursor = db.cursor()
-    print(user)
+    username = user
     
     try:
         # Create new deck
@@ -30,7 +35,7 @@ def create_deck(body: DeckInfo, user: str) -> bool:
             INSERT INTO `deck` (`deckName`, `deckDescription`, `deckOwnerName`) 
             VALUES (%s, %s, %s)
             """,
-            (body.name, body.description, user)
+            (body.name, body.description, username)
         )
         deck_id = cursor.lastrowid
 
@@ -40,7 +45,7 @@ def create_deck(body: DeckInfo, user: str) -> bool:
             INSERT INTO `access` (`deckid`, `username`, `allow`) 
             VALUES (%s, %s, %s)
             """,
-            (deck_id, user, True)
+            (deck_id, username, True)
         )
 
         # Commit the changes to the database
@@ -57,8 +62,18 @@ def create_deck(body: DeckInfo, user: str) -> bool:
 
     return True
 
-def get_deck():
-    pass
+def get_deck(user:str) -> List[DeckList]:
+    db = connect_to_db()
+    cursor = db.cursor()
+    username = user
+
+    cursor.execute(
+        """
+        SELECT `deck.deckid`, `deck.deckname` 
+        FROM `deck` 
+        JOIN `access` ON
+        """
+    )
 
 def edit_deck():
     pass
