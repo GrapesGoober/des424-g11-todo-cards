@@ -19,7 +19,7 @@ CREATE TABLE `deck` (
   `deckName` varchar(50) NOT NULL,
   `deckDescription` text NOT NULL,
   `deckOwnerID` varchar(50) NOT NULL
-)
+);
 
 -- Deck-User
 CREATE TABLE `access` (
@@ -27,4 +27,11 @@ CREATE TABLE `access` (
   `userid` int(11) NOT NULL,
   `allow` BOOL DEFAULT FALSE,
   PRIMARY KEY (`deckid`, `userid`)
-)
+);
+
+CREATE TABLE users (
+    `username` VARCHAR(20) PRIMARY KEY,
+    `password` TEXT,
+    `date_of_birth` DATE,
+    `email` TEXT
+);
