@@ -117,7 +117,7 @@ def generate_token(body: LoginRequest) -> str:
     # All checks passed, then returns a JWT token
     payload = TokenPayload(
         username=body.username,
-        expire=datetime.now(timezone.utc) + timedelta(minutes=1)
+        expire=datetime.now(timezone.utc) + timedelta(days=1)
     )
 
     encoded_jwt = jwt.encode(payload.model_dump(mode='json'), SECRET_KEY, algorithm=ALGORITHM)
