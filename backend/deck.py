@@ -2,6 +2,10 @@ import mysql.connector
 from pydantic import BaseModel
 from datetime import datetime
 
+class DeckInfo(BaseModel):
+    name: str
+    description: str
+
 def connect_to_db() -> mysql.connector.MySQLConnection:
     """
     Returns mysql connection to `interns_db` as root user.
@@ -14,23 +18,52 @@ def connect_to_db() -> mysql.connector.MySQLConnection:
         database="todocards"
     )
 
-def create_deck(mydb, deck_info, userid):
-    mycursor = mydb.cursor()
-    mycursor.execute(
-        """
-        INSERT INTO `deck` (`deckName`, `deckDescription`, `deckOwnerID`) 
-        VALUES (%s, %s)
-        """,
-        (deck_info["deckName"], deck_info["deckDescription"])
-    )
+def create_deck(body: DeckInfo, user: str) -> bool:
+    db = connect_to_db()
+    cursor = db.cursor()
+    print(user)
+    
+    try:
+        # Create new deck
+        cursor.execute(
+            """
+            INSERT INTO `deck` (`deckName`, `deckDescription`, `deckOwnerName`) 
+            VALUES (%s, %s, %s)
+            """,
+            (body.name, body.description, user)
+        )
+        deck_id = cursor.lastrowid
 
-    deck_id = mycursor.lastrowid
+        # Add the owner to the access table
+        cursor.execute(
+            """
+            INSERT INTO `access` (`deckid`, `username`, `allow`) 
+            VALUES (%s, %s, %s)
+            """,
+            (deck_id, user, True)
+        )
+
+        # Commit the changes to the database
+        db.commit()
+
+    except Exception as e:
+        db.rollback()  # Roll back in case of an error
+        print(f"Error: {e}")
+        return False
+
+    finally:
+        # Close the cursor
+        cursor.close()
+
     return True
+
+def get_deck():
+    pass
 
 def edit_deck():
     pass
 
-def delete_deck():
+def delete_deck(d):
     pass
 
 def add_user_to_deck():

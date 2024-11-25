@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 import record_text
 import user
+import deck
 
 app = FastAPI()
 
@@ -23,3 +24,13 @@ async def token(body: user.LoginRequest) -> str:
 @app.post("/api/test-token")
 async def test_token(token: str) -> str:
     return user.verify_jwt_username(token)
+
+@app.post("/api/deck")
+async def create_deck(token: str, body: deck.DeckInfo) -> bool:
+    username = user.verify_jwt_username(token)
+    return deck.create_deck(body, username)
+
+@app.delete("/api/deck")
+async def delete_deck(token: str, id: int) -> bool:
+    username = user.verify_jwt_username(token)
+    return deck.delete_deck(id, username)

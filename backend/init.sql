@@ -17,18 +17,19 @@ CREATE TABLE text_records (
 CREATE TABLE `deck` (
   `deckid` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
   `deckName` varchar(50) NOT NULL,
-  `deckDescription` text NOT NULL,
-  `deckOwnerID` varchar(50) NOT NULL
+  `deckDescription` TEXT NOT NULL,
+  `deckOwnerName` varchar(50) NOT NULL
 );
 
 -- Deck-User
 CREATE TABLE `access` (
   `deckid` int(11) NOT NULL,
-  `userid` int(11) NOT NULL,
+  `username` varchar(50) NOT NULL,
   `allow` BOOL DEFAULT FALSE,
-  PRIMARY KEY (`deckid`, `userid`)
+  PRIMARY KEY (`deckid`, `username`)
 );
 
+-- User
 CREATE TABLE users (
     `username` VARCHAR(20) PRIMARY KEY,
     `password` TEXT,
