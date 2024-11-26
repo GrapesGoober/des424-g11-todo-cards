@@ -1,6 +1,5 @@
 <script>
     import * as APIs from "$lib"
-	import { clickOutside } from './clickOutside.js';
 
     export let subcardinfo, refresh, editable
     let isSelected = false, isEditing = false, currentlyEditingSubcard
@@ -49,8 +48,7 @@
 
 <button 
     class="wrapper {isSelected ? "selected" : ""}" 
-    on:click={selectSubcard}
-    use:clickOutside on:click_outside={()=>{isSelected = false, isEditing = false}}>
+    on:click={selectSubcard}>
 
     {#if subcardinfo.subcardIsFinished}
         <button class="tick {editable ? "bobbing-hover" : ""}" on:click={finishSubcard}>
