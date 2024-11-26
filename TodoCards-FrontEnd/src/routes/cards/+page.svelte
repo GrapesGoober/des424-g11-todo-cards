@@ -16,6 +16,7 @@
         let deckId = searchParams.get("deckId")
         cardslist = await APIs.getCardslist(deckId)
         dashboardData = await APIs.getDashboardData(deckId)
+        dashboardData[2] = dashboardData[0] - dashboardData[1]
 
         // also get the deck info to display as well
         let deckslist = await APIs.getDeckslist()
@@ -85,6 +86,14 @@
     {/if}
     <p>{deckinfo.deckDescription}</p>
 
+    {#if dashboardData.length === 3}
+    <div class="dashboard-data">
+        <p><b>Total Cards:</b> {dashboardData[0]}</p>
+        <p><b>Finished Cards:</b> {dashboardData[1]}</p>
+        <p><b>Unfinished Cards:</b>{dashboardData[2]}</p>
+    </div>
+    {/if}
+
     <div>
         {#each cardslist as card}
             <Card bind:cardinfo={card} bind:editable={deckinfo.editable} refresh={getCardslistAndDeckInfo}></Card>
@@ -95,13 +104,6 @@
     <button class="add-btn bobbing-hover" on:click={showAddCardModal}>
         <i class="fas fa-plus-circle "></i>
     </button>
-    {/if}
-
-    {#if dashboardData.length === 2}
-    <div class="dashboard-data">
-        <p><b>Total Cards:</b> {dashboardData[0]}</p>
-        <p><b>Completed Cards:</b> {dashboardData[1]}</p>
-    </div>
     {/if}
     
 {/if}
