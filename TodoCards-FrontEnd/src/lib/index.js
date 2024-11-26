@@ -58,8 +58,8 @@ export async function getCardslist(deckId){
     return await sendAuthBackendRequest("/get-cards-list", {deckId})
 }
 
-export async function getDashboardData(deckID){
-    return await sendAuthBackendRequest("/get-dashboard-data", {deckID})
+export async function getDashboardData(deckId){
+    return await sendAuthBackendRequest("/get-dashboard-data", {deckId})
 }
 
 export async function getSubcardslist(cardId){

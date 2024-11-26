@@ -9,7 +9,6 @@
     import EditSubcardTemplate from "./EditSubcardTemplate.svelte";
     import SharecodeTemplate from "./SharecodeTemplate.svelte";
 </script>
-<link rel="apple-touch-icon" href="/custom_icon.png"/>
 <h1>This is a demo for the APIs</h1>
 
 <h2>Try pinging the server</h2>

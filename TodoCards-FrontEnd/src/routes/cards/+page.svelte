@@ -7,12 +7,15 @@
 
     // Send request to backend to query the cards for us
     let cardslist = []
+    let dashboardData = []
     let deckinfo
     let formattedDeckDue = ""
     async function getCardslistAndDeckInfo(){
         // get the cardslist
         let searchParams = new URLSearchParams(window.location.search)
         let deckId = searchParams.get("deckId")
+        console.log("dek aaaa dee")
+        console.log(deckId)
         cardslist = await APIs.getCardslist(deckId)
         dashboardData = await APIs.getDashboardData(deckId)
 
@@ -50,7 +53,6 @@
 
 <!-- Font Awesome 5 Free -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-<link rel="apple-touch-icon" href="/custom_icon.png"/>
 
 
 {#if deckinfo}
@@ -96,6 +98,13 @@
     </button>
     {/if}
 
+    {#if dashboardData.length === 2}
+    <div class="dashboard-data">
+        <p><b>Total Cards:</b> {dashboardData[0]}</p>
+        <p><b>Completed Cards:</b> {dashboardData[1]}</p>
+    </div>
+    {/if}
+    
 {/if}
 
 <style>
@@ -121,5 +130,17 @@
     }
     .add-btn:hover {
         color: rgb(10, 170, 10);
+    }
+
+    .dashboard-data {
+        margin: 1rem 0;
+        padding: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+    }
+    .dashboard-data p {
+        margin: 0.5rem 0;
+        font-size: 1rem;
     }
 </style>
