@@ -3,7 +3,7 @@
 
     let username = "" // the input requires a username & password
     let password = ""
-    let wrongPassword = false
+    //let wrongPassword = false
     async function login(){
         let status = await APIs.login(username, password)
         // upon successful login, we wanna redirect user to home page 
@@ -16,7 +16,8 @@
         }
         // upon bad login, we might want to display something on the screen
         else {
-            wrongPassword = true
+            alert("username or password is incorrect")
+            //wrongPassword = true
         }
     }
 </script>
@@ -117,9 +118,9 @@
         <input type="password" placeholder="Password" bind:value={password}>
     </div>
 
-    {#if wrongPassword}
+    <!-- {#if wrongPassword}
     <p class="wrong-text">username or password is incorrect</p>  
-    {/if}
+    {/if} -->
     <button on:click={login}>Submit</button>
 
     <p class="signup-txt">If you don't have an account, sign up <a href="/signup">here</a></p>

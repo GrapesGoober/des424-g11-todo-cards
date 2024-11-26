@@ -77,11 +77,11 @@
         transform: translateY(-2px);
     }
 
-    .error-text {
+    /* .error-text {
         color: #ff3e3e;
         margin-top: 15px;
         font-size: 1.1rem;
-    }
+    } */
 
     .login-txt {
         margin-top: 30px;
