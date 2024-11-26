@@ -1,7 +1,6 @@
 # This is the script app.py, which is the entry point for the flask app
 # This file contains the logic for routes, sessions, handling requests
 # This file does not contain the logic for handling database queries & business logic
-# Author: Panisara S 6422781326, Nachat K 6422770774
 
 from flask import Flask, request, jsonify, session
 import mysql.connector

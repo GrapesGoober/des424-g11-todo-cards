@@ -1,6 +1,5 @@
 # This is the script cards.py, which will be handling all-things cards and subcards
 # This includes: getting, creating, editing, finishing, and deleting cards and subcards
-# Author: Panisara S 6422781326, Nachat K 6422770774
 
 # using this access check function for the "create card" feature
 #from decks import check_deck_view_access, check_deck_edit_access
