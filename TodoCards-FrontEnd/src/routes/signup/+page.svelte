@@ -1,121 +1,137 @@
 <script>
     import * as APIs from "$lib"
 
-    let signup_username = ""
-    let signup_password = ""
-    let signup_confirm_password = ""
-    let signup_status = false;
-
-    let errorMessage = ""
+    let username = ""
+    let password = ""
+    let confirmPassword = ""
+    //let passwordMismatch = false
+    //let signupFailed = false
 
     async function signup() {
-
-        if (signup_username == "" || signup_password == "" || signup_confirm_password == "") {
-            errorMessage = "Please fill in all forms"
+        if (password !== confirmPassword) {
+            //passwordMismatch = true
+            alert("Passwords do not match")
             return
         }
-
-        if (signup_password != signup_confirm_password) {
-            errorMessage = "Password doesn't match";
-            return
+        //passwordMismatch = false
+        
+        let status = await APIs.signup(username, password)
+        if (status == true) {
+            window.location.href = "/login"
+        } else {
+            alert("Username already exists")
+            //signupFailed = true
         }
-
-        signup_status = await APIs.signup(signup_username, signup_password);
-        if (signup_status === true) {
-            window.location.href = "/";
-        }
-        else {
-            errorMessage = signup_status
-        }
-    }
-
-    async function goback(){
-        window.location.href = "/login";
     }
 </script>
 
-<!-- Font Awesome 5 Free -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-<link rel="apple-touch-icon" href="/custom_icon.png"/>
-<div class="signuppage">
-    <div class="header">
-        <!--might add an icon for going back to login page-->
-        <button class="goback_btn" on:click={goback}><i class="fas fa-angle-left"></i></button>
-        <h1>Sign up</h1>
-    </div>
-    <div>
-        <input type="text" placeholder="Username" bind:value={signup_username}>
-    </div>
-    <div>
-        <input type="password" placeholder="Password" bind:value={signup_password}> 
-    </div>
-    <div>
-        <input type="password" placeholder="Confirm Password" bind:value={signup_confirm_password}>
-    </div>
-
-    {#if errorMessage}
-        <p class="wrong-text">{errorMessage}</p>  
-    {/if}
-    <button class="signup_btn" on:click={signup}>Sign up</button>
-</div>
-
 <style>
-    @import "../style.css";
-    p {
-        margin: 0;
-    }
-    div {
-        width: 300px;
-        height: 40px;
-    }
     .signuppage {
-        margin-left: 15px;
-    }
-    input {
-        width: 250px;
-        height: 28px;
-        border-radius: 16px;
-        border-width: 1px;
-        padding-left: 16px;
-    }
-    .signup_btn {
-        width: 268px;
-        height: 30px;
-        border: none;
-        border-radius: 15px;
-        background-color: rgb(90, 90, 255);
-        color: white;
-        font-weight: bold;
-        cursor: pointer;
-    }
-    .signup_btn:hover {
-        background-color: rgb(111, 111, 255);
-    }
-    .signup_btn:active {
-        background-color: rgb(129, 129, 255);
-    }
-    .wrong-text {
-        color: red;
-        font-size: 12px;
-        margin-bottom: 12px;
-        margin-right: 10px;
-    }
-    .header {
-        margin-top: 20px;
-        margin-bottom: 20px;
         display: flex;
+        flex-direction: column;
         align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background-color: #f5f5f5;
+        padding: 40px;
     }
-    .goback_btn {
+
+    h1 {
+        color: #333;
+        margin-bottom: 2rem;
+        font-size: 3.5rem;
         font-weight: bold;
-        font-size: 36px;
-        margin-right: 12px;
-        background-color: white;
-        padding: 0;
-        border: none;
-        cursor: pointer;
     }
-    .goback_btn:active {
-        color: rgb(77, 77, 77);
+
+    input {
+        width: 400px;
+        padding: 15px 25px;
+        margin: 12px 0;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 1.2rem;
+        transition: border-color 0.3s ease;
+    }
+
+    input:focus {
+        outline: none;
+        border-color: #4CAF50;
+        box-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
+    }
+
+    button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 16px 50px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1.2rem;
+        margin-top: 25px;
+        min-width: 200px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    button:hover {
+        background-color: #45a049;
+        transform: translateY(-2px);
+    }
+
+    .error-text {
+        color: #ff3e3e;
+        margin-top: 15px;
+        font-size: 1.1rem;
+    }
+
+    .login-txt {
+        margin-top: 30px;
+        color: #666;
+        font-size: 1.1rem;
+    }
+
+    .login-txt a {
+        color: #4CAF50;
+        text-decoration: none;
+        font-weight: bold;
+        padding: 5px;
+    }
+
+    .login-txt a:hover {
+        text-decoration: underline;
+    }
+
+    @media (min-width: 1200px) {
+        input {
+            width: 500px;
+        }
+        
+        button {
+            min-width: 250px;
+        }
     }
 </style>
+
+<div class="signuppage">
+    <h1>Sign Up</h1>
+    <div>
+        <input type="text" placeholder="Username" bind:value={username}>
+    </div>
+    <div>
+        <input type="password" placeholder="Password" bind:value={password}>
+    </div>
+    <div>
+        <input type="password" placeholder="Confirm Password" bind:value={confirmPassword}>
+    </div>
+
+    <!-- {#if passwordMismatch}
+    <p class="error-text">Passwords do not match</p>
+    {/if}
+
+    {#if signupFailed}
+    <p class="error-text">Username already exists</p>
+    {/if} -->
+
+    <button on:click={signup}>Sign Up</button>
+
+    <p class="login-txt">Already have an account? Login <a href="/login">here</a></p>
+</div>
