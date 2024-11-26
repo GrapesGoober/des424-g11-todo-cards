@@ -11,7 +11,7 @@ Instruction:
 4.1 If you only have a viewer permission, you can only see the list of task and their deadline.
 
 ## Current Link
-- Jira: https://nachatk.atlassian.net/jira/software/projects/DES424/boards/34/timeline?selectedIssue=DES424G11-2
+- Jira: https://nachatk.atlassian.net/jira/software/projects/DES424/boards/34
 - Todo-Card Website: 3.91.230.100:5173
 
 ## Members
