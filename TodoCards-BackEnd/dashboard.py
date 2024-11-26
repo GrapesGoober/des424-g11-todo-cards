@@ -15,8 +15,8 @@ def get_finished_cards(mydb, deck_id):
     """, (deck_id,))
 
     # Fetch all the results
-    result = mycursor.fetchone()
-    finished_cards = result[0]
+    result = mycursor.fetchall()
+    finished_cards = result[0][0]
 
     # Close the cursor
     mycursor.close()
@@ -36,8 +36,8 @@ def get_all_cards(mydb, deck_id):
     """, (deck_id,))
 
     # Fetch all the results
-    result = mycursor.fetchone()
-    all_cards = result[0]
+    result = mycursor.fetchall()
+    all_cards = result[0][0]
 
     # Close the cursor
     mycursor.close()
