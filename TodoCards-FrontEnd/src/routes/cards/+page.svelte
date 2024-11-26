@@ -14,6 +14,7 @@
         let searchParams = new URLSearchParams(window.location.search)
         let deckId = searchParams.get("deckId")
         cardslist = await APIs.getCardslist(deckId)
+        dashboardData = await APIs.getDashboardData(deckId)
 
         // also get the deck info to display as well
         let deckslist = await APIs.getDeckslist()

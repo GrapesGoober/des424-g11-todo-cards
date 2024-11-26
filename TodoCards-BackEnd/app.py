@@ -4,7 +4,7 @@
 
 from flask import Flask, request, jsonify, session
 import mysql.connector
-import cards, user, decks, admin
+import cards, user, decks, admin, dashboard
 
 # sets up some flask stuff (oh, and CORS too)
 app = Flask(__name__)
@@ -94,6 +94,17 @@ def get_decks_list():
     mydb.close()
     return jsonify(result)
 
+# retrieve a list of data for dashboard
+@app.route("/api/get-dashboard-data", methods=["POST"])
+def get_dashboard():
+    mydb = connect_to_db()
+    jsonbody = request.get_json()
+    deck_id = jsonbody.get("deckId")
+    allCount = dashboard.get_all_cards(mydb, deck_id)
+    finishCount = dashboard.get_finished_cards(mydb, deck_id)
+    mydb.close()
+    result = [allCount, finishCount]
+    return jsonify(result)
 
 # retrieve a list of cards using deckId. 
 @app.route("/api/get-cards-list", methods=["POST"])
