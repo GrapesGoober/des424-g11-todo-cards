@@ -20,6 +20,7 @@
         }
     }
 </script>
+<link rel="apple-touch-icon" href="/custom_icon.png"/>
 <div class="loginpage">
     <h1>Login</h1>
     <div>
