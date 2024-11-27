@@ -13,7 +13,7 @@ Instruction:
 
 ## Current Link
 - Jira: https://nachatk.atlassian.net/jira/software/projects/DES424/boards/34
-- Todo-Card Website: <EC2 Public IP>:5173
+- Todo-Card Website: EC2 Public IP:5173
 
 ## Members
 - Nachat Kaewmeesang 6422770774
