@@ -9,7 +9,7 @@ Instruction:
     - Create new card with its name, description, deadlines, and colors.
     - Add subcards to breakdown the card into smaller tasks
     - Remove cards or mark them as done.
-4.1 If you only have a viewer permission, you can only see the list of task and their deadline.
+5. If you only have a viewer permission, you can only see the list of task and their deadline.
 
 ## Current Link
 - Jira: https://nachatk.atlassian.net/jira/software/projects/DES424/boards/34
