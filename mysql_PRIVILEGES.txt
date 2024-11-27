@@ -1,0 +1,19 @@
+DROP USER IF EXISTS 'user';
+CREATE USER 'user' IDENTIFIED BY 'user123'; 
+GRANT SELECT, INSERT ON todocards.* TO 'user' IDENTIFIED BY 'user123';
+GRANT UPDATE, DELETE ON todocards.deck TO 'user' IDENTIFIED BY 'user123';
+GRANT UPDATE, DELETE ON todocards.card TO 'user' IDENTIFIED BY 'user123';
+GRANT UPDATE, DELETE ON todocards.subcard TO 'user' IDENTIFIED BY 'user123';
+GRANT DELETE ON todocards.access TO 'user' IDENTIFIED BY 'user123';
+GRANT DELETE ON todocards.share TO 'user' IDENTIFIED BY 'user123';
+FLUSH PRIVILEGES;
+
+
+
+
+DROP USER IF EXISTS superadmin;
+CREATE USER IF NOT EXISTS 'superadmin' IDENTIFIED BY 'superadmin123'; 
+GRANT SELECT ON todocards.* TO 'superadmin' IDENTIFIED BY 'superadmin123';
+GRANT DELETE ON todocards.user TO 'superadmin' IDENTIFIED BY 'superadmin123';
+GRANT DELETE ON todocards.deck TO 'superadmin' IDENTIFIED BY 'superadmin123';
+FLUSH PRIVILEGES;
