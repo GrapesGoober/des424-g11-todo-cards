@@ -21,7 +21,7 @@ def check_login():
         
 def connect_to_db():
     return mysql.connector.connect(
-        host="mysql",
+        host="localhost",
         user="user",
         password="user123",
         database="TodoCards"
@@ -29,7 +29,7 @@ def connect_to_db():
 
 def admin_connect_to_db():
     return mysql.connector.connect(
-        host="mysql",
+        host="localhost",
         user="superadmin",
         password="superadmin123",
         database="TodoCards"
