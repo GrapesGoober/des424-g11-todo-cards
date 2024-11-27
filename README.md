@@ -7,6 +7,7 @@ Instruction:
     - Modify the deck name and description.
     - Use the sharelink to add new members to the deck with predetermined permission.
     - Create new card with its name, description, deadlines, and colors.
+    - Add subcards to breakdown the card into smaller tasks
     - Remove cards or mark them as done.
 4.1 If you only have a viewer permission, you can only see the list of task and their deadline.
 
