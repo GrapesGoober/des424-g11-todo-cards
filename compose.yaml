@@ -1,43 +1,17 @@
 services:
   svelte-app:
-    build: 
-      context: ./TodoCards-FrontEnd  # Build the image from frontend
-      args: 
-        - --no-cache=True
-    volumes:
-      - ./TodoCards-FrontEnd/src:/app/src
-      - ./TodoCards-FrontEnd/static:/app/static
-      - ./TodoCards-FrontEnd/vite.config.js:/app/vite.config.js
-      - ./TodoCards-FrontEnd/svelte.config.js:/app/svelte.config.js
-      - ./TodoCards-FrontEnd/.svelte-kit:/app/.svelte-kit
+    image: todocards/svelte-app
     ports:
-      - "5173:5173"  # Map container port 5173 (default Vite port)
+      - "80:80"  # Map container port to default web server
     depends_on:
       - flask-app  # Wait for backend to start before running the Flask app
-    command: npm run dev -- --host 0.0.0.0 --port 5173
   flask-app:
-    build: 
-      context: ./TodoCards-BackEnd  # Build the image from the current directory (.)
-      args: 
-        - --no-cache=True
-    volumes:
-      - ./TodoCards-BackEnd:/app  # Mount current directory to /app in the container
+    image: todocards/flask-app
     ports:
       - "5000:5000"  # Flask uses port 5000 as default
     depends_on:
       - mysql  # Wait for MySQL to start before running the FastAPI app
   mysql:
-    image: mysql:5.7
-    container_name: mysql
-    environment:
-      MYSQL_DATABASE: 'mysql'
-      # in this case, user="root"
-      MYSQL_ROOT_PASSWORD: ''
-      MYSQL_ALLOW_EMPTY_PASSWORD: yes
+    image: todocards/mysql
     ports:
       - "3306:3306"
-    volumes:
-      - mysqldata:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-volumes:
-  mysqldata:
